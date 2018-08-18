@@ -1,8 +1,10 @@
+// usuário: admin
+// senha: alg321
 //Bianca Dias Barbosa e Henrique Marciano da Silva - BSI 2018
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <ctype.h>
 #include <windows.h>
 #define N 11
 
@@ -13,11 +15,13 @@ void sair ();
 float convertToFloat(char bitS[], float bitF);
 int verifyBit(char bitS[]);
 void bitCount(float num, float dec, float notas[], float moedas[]);
+void calculaNotasEMoedas();
 void sobre();
 void ajuda();
 void menu ();
 void moldura();
 void menuBoasVindas();
+void login();
 
 void hideCursor(){
   CONSOLE_CURSOR_INFO cursor = {1, FALSE};
@@ -67,33 +71,83 @@ int verifyBit(char bitS[]){
 void bitCount(float num, float dec, float notas[], float moedas[]){
     float div, rest;
     int parte_int;
+    int aux = 5;
+    int tecla;
     
-    if (num != 0){
+    hideCursor();
+    
+    printf("\n");
+    
+	if (num != 0){
         rest = num;
         int i;
         for(i = 0; i < 7; i++){
-        div = rest/notas[i];
-        parte_int = div;
-        rest -= parte_int * notas[i];
-        printf("%d nota(s) de %.2f Bits\n", parte_int, notas[i]);
+	        div = rest/notas[i];
+	        parte_int = div;
+	        rest -= parte_int * notas[i];
+	        gotoxy(10,aux);printf("%d nota(s) de %.2f Bits\n", parte_int, notas[i]);
+	        aux++;
         }
     }
     if (dec != 0){
         rest = dec;
         int i;
         for(i = 0; i < 4; i++){
-        div = rest/moedas[i];
-        parte_int = div;
-        rest -= parte_int * moedas[i];
-        printf("%d moeda(s) de %.2f CentBits\n", parte_int, moedas[i]/100);
+	        div = rest/moedas[i];
+	        parte_int = div;
+	        rest -= parte_int * moedas[i];
+	        gotoxy(10,aux);printf("%d moeda(s) de %.2f CentBits\n", parte_int, moedas[i]/100);
+	        aux++;
         }
     }
+    
+	gotoxy(40,20);printf("<ESC> Voltar ao menu principal.");
+
+    do{
+    	tecla = getch();
+	}while(tecla != 27);
+	menu();
+}
+
+void calculaNotasEMoedas(){
+	system("cls");
+	showCursor();
+	char t1[50];
+	char *t2;
+    float num, dec, notas[7] = {100, 50, 20, 10, 5, 2, 1}, moedas[4] = { 50, 25, 10, 1};
+	int cont;
+	moldura();
+	gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
+
+	do{
+        gotoxy(10,4);printf("Por favor, insira a quantia de bits que deseja sacar (precisao de duas casas): ");
+        fflush(stdin);
+        scanf("%s", &t1);
+        cont = verifyBit(t1);
+        if(cont == 0){
+        	system("cls");
+        	moldura();
+        	gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
+            gotoxy(40,20);printf("Por favor, utilize ponto no lugar da virgula.\n");
+        }else{
+            gotoxy(40,20);printf("                                              ");	
+		}
+	} while(cont > 2 || cont == 0);
+	
+	t2 = strtok(t1, ".");
+    t2 = strtok(NULL,".");
+    
+	num = convertToFloat(t1, num);
+	dec = convertToFloat(t2, dec);
+	
+	bitCount(num, dec, notas, moedas);
 }
 
 void sobre(){	
 	int tecla = 32;
 	system("cls");
-	gotoxy(50,1);printf("SOBRE - MOEDA BIT");
+	moldura();
+	gotoxy(55,2);printf("SOBRE - MOEDA BIT");
 	printf("\n\n\tTrabalho de strings desenvolvido por Bianca Dias e Henrique Marciano\n\t");
 	printf("\n\tDisciplina: Algoritmos I\n\t");
 	printf("\n\tProfessora: Andrea");
@@ -111,34 +165,35 @@ void sobre(){
 }
 
 void ajuda(){
-	gotoxy(52,17);printf("AJUDA");
+	gotoxy(55,17);printf("AJUDA - MOEDA BIT");
 	gotoxy(10,19);printf("Utilize as setas do seu teclado para mover o quadradinho para cima ou para baixo.");
 	gotoxy(10,20);printf("Para escolher uma opcao, aperte ENTER.");
 	gotoxy(10,21);printf("Para finalizar o programa, aperte ESC");
-	gotoxy(10,22);printf("Divirta-se e aprenda muita matematica!");	
+	gotoxy(10,23);printf("O sistema calculara para voce a quantidade de notas e moedas que voce deve dar ao seu cliente!");	
+	gotoxy(10,24);printf("Alem disso, o sistema possui a opcao de preencher um cheque!");	
 }
 
 void menu(){
 	system("cls");
+	moldura();
+	
 	int tecla;
 	int cont = 0;
 	
 	hideCursor();
 
-	gotoxy(50,1);printf("MENU PRINCIPAL");
+	gotoxy(55,2);printf("MENU PRINCIPAL");
 	gotoxy(8,4);printf("%c",254);
-	gotoxy(10,4);printf("Operacoes entre matrizes");
-	gotoxy(10,6);printf("Verificacao");
-	gotoxy(10,8);printf("Determinar matriz transposta");
-	gotoxy(10,10);printf("Resolva um sistema linear triangular");
-	gotoxy(10,12);printf("Sobre");
+	gotoxy(10,4);printf("Determinar notas e moedas");
+	gotoxy(10,6);printf("Preencher cheque");
+	gotoxy(10,8);printf("Sobre");
 	gotoxy(10,15);printf("<ESC> Sair");
 	gotoxy(30,15);printf("<SPACE> Ajuda");
 
    	while(tecla!=27){
    		gotoxy(10,14);tecla = getch();
    		
-   		if(tecla == 80 && cont<=6){ // para baixo
+   		if(tecla == 80 && cont<=2){ // para baixo
    			gotoxy(8,4+cont);printf("  ");
    			cont+=2;
 			gotoxy(8,4+cont);printf("%c",254);  
@@ -153,18 +208,12 @@ void menu(){
 		if(tecla == 13){
 			switch(cont){
 				case 0: 
-					//menuOperacoes(matriz);
+					calculaNotasEMoedas();
 					break;
 				case 2:
-					//menuVerificacao(matriz);
+					//preencheCheque();
 					break;
 				case 4:
-					//matrizTransposta(matriz);
-					break;
-				case 6:
-					//menuSistemaLinear(matriz);
-					break;
-				case 8:
 					sobre();
 					break;
 			}
@@ -213,39 +262,106 @@ void moldura(){ //desenha a moldura
 
 void menuBoasVindas(){
 	char tecla;
+	int aux = 1;
+	int tent = 0;
 	moldura();
 	gotoxy(50,10);printf("Bem-vindo ao sistema BitTech");
+	gotoxy(45,12);printf("Pressione qualquer tecla para continuar...");
 	hideCursor();
-	tecla = getch();
+	
+	if(tecla = getch()){
+		login(aux, tent);
+	}
+}
+
+void login(int verifica, int tentativas){
+	char senha[100];
+	char senhaOriginal[100];
+	
+	strcpy(senhaOriginal,"alg321");
+	
+	char aux;
+	int tent = tentativas; // conta a quantidade de tentativas do usuário
+	int a = -1;
+	int b = 26;
+	int verificacao = 1;
+	int i = 0;
+	
+	system("cls");
+	moldura();
+	showCursor();
+	gotoxy(60,3);printf("LOGIN");
+	gotoxy(30,6);printf("Nosso sistema eh protegido por senha. Por favor, entre com a senha do admin.");
+	gotoxy(20,8);printf("Usuario: admin ");
+	gotoxy(20,10);printf("Senha: ");
+	if(verifica == 0){
+		gotoxy(40,20);printf("Senha incorreta! Por favor, digite novamente.");
+		gotoxy(b,10);
+	}
+	
+	if(verifica == 2){
+		gotoxy(40,20);printf("Por favor, digite a senha antes de pressionar enter.");
+		gotoxy(b,10);	
+	}
+	fflush(stdin);	
+	do{
+		aux = getch();
+		if(aux > 32){// é caracter que posso escrever, ou seja, não é enter etc
+			a++;
+			senha[a] = aux;
+			b++;
+			gotoxy(b,10);printf("*");
+		}else{
+			if(aux == 8 && a != -1){//backspace - to apagando
+				a--;
+				senha[a] = '\0';
+				b--;
+            	printf("%s", "\b \b");
+			}
+		}		
+	}while(aux!=13);
+	
+	if(strcmp(senha,senhaOriginal) == 0){
+		system("cls");
+		moldura();
+		gotoxy(50,10);printf("Login realizado com sucesso!");
+		gotoxy(40,12);printf("Voce esta sendo redirecionado para o sistema...");
+		Sleep(2000);
+		menu();
+	}else{
+		if(a != -1){
+			if(tent<6 && tent!=3 && tent!=6){
+				tent++;
+				verificacao=0;
+				login(verificacao, tent);
+			}else if(tent==3){
+				system("cls");
+				gotoxy(40,2);printf("Infelizmente, voce errou a senha 3 vezes!");
+				gotoxy(40,4);printf("Espere 5 segundos para tentar novamente...");
+				printf("\n\n");
+				for(i=5;i>0;i--){
+					printf("\t\t   %d...",i);
+					Sleep(1000);
+				}
+				tent++;
+				verificacao=0;
+				login(verificacao,tent);
+			}else if(tent==6){
+				system("cls");
+				gotoxy(40,2);printf("Infelizmente, voce errou a senha 6 vezes!");
+				gotoxy(40,4);printf("Por questoes de seguranca, vamos encerrar o programa...");
+				printf("\n\n");
+				exit(0);
+			}
+		}else{
+			verificacao = 2;
+			login(verificacao, tent);
+		}
+		
+	}
 }
 
 int main(){
 	system("mode con:cols=131 lines=31");
-	char t1[50];
-	char *t2;
-    float num, dec, notas[7] = {100, 50, 20, 10, 5, 2, 1}, moedas[4] = { 50, 25, 10, 1};
-	int cont;
-	int opc;
-	int loginCorreto = 0;
-	
-	// menuBoasVindas();
-		
-	do{
-        printf("\nPor favor, insira a quantia de bits que deseja sacar (precisao de duas casas): ");
-        scanf("%s", &t1);
-        cont = verifyBit(t1);
-        if(cont == 0){
-            system("cls");
-            printf("\nPor favor, utilize ponto no lugar da virgula.\n");
-        }
-
-	} while(cont > 2 || cont == 0);
-	
-	t2 = strtok(t1, ".");
-    t2 = strtok(NULL,".");
-    
-	num = convertToFloat(t1, num);
-	dec = convertToFloat(t2, dec);
-	
-	bitCount(num, dec, notas, moedas);
+	menuBoasVindas();
 }
