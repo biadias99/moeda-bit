@@ -263,7 +263,7 @@ void moldura(){ //desenha a moldura
 void menuBoasVindas(){
 	char tecla;
 	int aux = 1;
-	int tent = 0;
+	int tent = 1;
 	moldura();
 	gotoxy(50,10);printf("Bem-vindo ao sistema BitTech");
 	gotoxy(45,12);printf("Pressione qualquer tecla para continuar...");
