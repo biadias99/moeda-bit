@@ -17,6 +17,7 @@ float convertToFloat(char bitS[], float bitF);
 int verifyBit(char bitS[]);
 void bitCount(float num, float dec, float notas[], float moedas[]);
 void calculaNotasEMoedas();
+void bitWrite(char t1[], char t2[]);
 void sobre();
 void ajuda();
 void menu ();
@@ -320,11 +321,13 @@ void CentBitWrite(char t2[]){
 }
 
 void bitWrite(char t1[], char t2[]){
-    int cont = 0, valido = 0, i, verificaT1, contT1 = 0, verificaT2, contT2 = 0;
+	hideCursor();
+    int cont = 0, valido = 0, i, verificaT1 = 1, contT1 = 0, verificaT2 = 1, contT2 = 0;
     char aux[4][4];
+    char tecla;
     divideBit(t1, aux, &cont);
     /*--------------------------------ESCREVE NUM---------------------------------------*/
-    printf("Preenchimento de cheque: ");
+    gotoxy(10,6);printf("Preenchimento de cheque: ");
     for(i = 0; i < strlen(t1); i++){
         if(t1[i] == '0')
             contT1++;
@@ -427,10 +430,16 @@ void bitWrite(char t1[], char t2[]){
         CentBitWrite(t2);
         printf("CentBit(s). ");
     }
+    
+	gotoxy(40,20);printf("<ESC> Voltar ao menu principal.");
 
+    do{
+    	tecla = getch();
+	}while(tecla != 27);
+	menu();
 }
 /*-------------------------------------------ADICIONADO--------------------------------------------------------------*/
-void calculaNotasEMoedas(){
+void calculaNotasEMoedas(int cheque){
 	system("cls");
 	showCursor();
 	char t1[50], t3[10];
@@ -438,18 +447,34 @@ void calculaNotasEMoedas(){
     float num, dec, notas[7] = {100, 50, 20, 10, 5, 2, 1}, moedas[4] = { 50, 25, 10, 1};
 	int cont, i, contP = 0;
 	moldura();
-	gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
+
+	if(cheque == 0){
+		gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
+	}
+	else{
+		gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");	
+	}
 
 	do{
-        gotoxy(10,4);printf("Por favor, insira a quantia de bits que deseja sacar (precisao de duas casas): ");
+		if(cheque == 0){
+			gotoxy(10,4);printf("Por favor, insira a quantia de bits que deseja sacar (precisao de duas casas): ");
+		}
+        else{
+        	gotoxy(10,4);printf("Por favor, insira a quantia de bits que deseja preencher o cheque (precisao de duas casas): ");
+		}
         //fflush(stdin);
         scanf("%s", &t1);
         cont = verifyBit(t1);
         if(cont == 0){
         	system("cls");
         	moldura();
-        	gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
-            gotoxy(40,20);printf("Por favor, utilize ponto no lugar da virgula.\n");
+			if(cheque == 0){
+				gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
+			}
+			else{
+				gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");	
+			}
+			gotoxy(40,20);printf("Por favor, utilize ponto no lugar da virgula.\n");
         }else{
             gotoxy(40,20);printf("                                              ");
 		}
@@ -474,9 +499,12 @@ void calculaNotasEMoedas(){
 	num = convertToFloat(t1, num);
 	dec = convertToFloat(t2, dec);
 
-	bitCount(num, dec, notas, moedas);
-
-    /*bitWrite(t1, t3); INICIA A ESCRITA DO CHEQUE*/
+	if(cheque == 0){
+		bitCount(num, dec, notas, moedas);
+	}
+	else{
+		bitWrite(t1, t3); 	
+	}
 }
 
 void sobre(){
@@ -485,7 +513,7 @@ void sobre(){
 	moldura();
 	gotoxy(55,2);printf("SOBRE - MOEDA BIT");
 	printf("\n\n\tTrabalho de strings desenvolvido por Bianca Dias e Henrique Marciano\n\t");
-	printf("\n\tDisciplina: Algoritmos I\n\t");
+	printf("\n\tDisciplina: Algoritmos II\n\t");
 	printf("\n\tProfessora: Andrea");
 	printf("\n\n\t\t\t\tBSI - 2018");
 	printf("\n\n\n\t<ESC> Voltar ao menu principal.");
@@ -515,7 +543,8 @@ void menu(){
 
 	int tecla;
 	int cont = 0;
-
+	int cheque;
+	
 	hideCursor();
 
 	gotoxy(55,2);printf("MENU PRINCIPAL");
@@ -544,10 +573,12 @@ void menu(){
 		if(tecla == 13){
 			switch(cont){
 				case 0:
-					calculaNotasEMoedas();
+					cheque = 0;
+					calculaNotasEMoedas(cheque);
 					break;
 				case 2:
-					//preencheCheque();
+					cheque = 1;
+					calculaNotasEMoedas(cheque);
 					break;
 				case 4:
 					sobre();
