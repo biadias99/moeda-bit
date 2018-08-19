@@ -287,25 +287,42 @@ void CentBitWrite(char t2[]){
                 printf("%s ", texto); //BIts.
                 unid = 0;
             }
-            else if(t2[i] == '1' && t2[i+1] == '1')
+            else if(t2[i] == '1' && t2[i+1] == '1'){
                 printf("onze ");
-            else if(t2[i] == '1' && t2[i+1] == '2')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '2'){
                 printf("doze ");
-            else if(t2[i] == '1' && t2[i+1] == '3')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '3'){
                 printf("treze ");
-            else if(t2[i] == '1' && t2[i+1] == '4')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '4'){
                 printf("quatorze ");
-            else if(t2[i] == '1' && t2[i+1] == '5')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '5'){
                 printf("quinze ");
-            else if(t2[i] == '1' && t2[i+1] == '6')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '6'){
                 printf("dezesseis ");
-            else if(t2[i] == '1' && t2[i+1] == '7')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '7'){
                 printf("dezessete ");
-            else if(t2[i] == '1' && t2[i+1] == '8')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '8'){
                 printf("dezoito ");
-            else if(t2[i] == '1' && t2[i+1] == '9')
+                unid = 0;
+            }
+            else if(t2[i] == '1' && t2[i+1] == '9'){
                 printf("dezenove ");
-
+                unid = 0;
+            }
             else if(t2[i+1] != '0' && t2[i+1] != '\0'){
                 dezena(texto, t2[i]);
                 printf("%s e ", texto);
@@ -430,7 +447,7 @@ void bitWrite(char t1[], char t2[]){
         CentBitWrite(t2);
         printf("CentBit(s). ");
     }
-    
+
 	gotoxy(40,20);printf("<ESC> Voltar ao menu principal.");
 
     do{
@@ -452,7 +469,7 @@ void calculaNotasEMoedas(int cheque){
 		gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
 	}
 	else{
-		gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");	
+		gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");
 	}
 
 	do{
@@ -472,7 +489,7 @@ void calculaNotasEMoedas(int cheque){
 				gotoxy(50,2);printf("CALCULO DE NOTAS E MOEDAS BIT");
 			}
 			else{
-				gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");	
+				gotoxy(50,2);printf("PREENCHIMENTO DE CHEQUE");
 			}
 			gotoxy(40,20);printf("Por favor, utilize ponto no lugar da virgula.\n");
         }else{
@@ -503,7 +520,7 @@ void calculaNotasEMoedas(int cheque){
 		bitCount(num, dec, notas, moedas);
 	}
 	else{
-		bitWrite(t1, t3); 	
+		bitWrite(t1, t3);
 	}
 }
 
@@ -544,7 +561,7 @@ void menu(){
 	int tecla;
 	int cont = 0;
 	int cheque;
-	
+
 	hideCursor();
 
 	gotoxy(55,2);printf("MENU PRINCIPAL");
