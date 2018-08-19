@@ -720,8 +720,9 @@ void login(int verifica, int tentativas){
 				login(verificacao, tent);
 			}else if(tent==3){
 				system("cls");
-				gotoxy(40,2);printf("Infelizmente, voce errou a senha 3 vezes!");
-				gotoxy(40,4);printf("Espere 5 segundos para tentar novamente...");
+				moldura();
+				gotoxy(40,3);printf("Infelizmente, voce errou a senha 3 vezes!");
+				gotoxy(40,5);printf("Espere 5 segundos para tentar novamente...");
 				printf("\n\n");
 				for(i=5;i>0;i--){
 					printf("\t\t   %d...",i);
@@ -732,8 +733,8 @@ void login(int verifica, int tentativas){
 				login(verificacao,tent);
 			}else if(tent==6){
 				system("cls");
-				gotoxy(40,2);printf("Infelizmente, voce errou a senha 6 vezes!");
-				gotoxy(40,4);printf("Por questoes de seguranca, vamos encerrar o programa...");
+				gotoxy(40,3);printf("Infelizmente, voce errou a senha 6 vezes!");
+				gotoxy(40,5);printf("Por questoes de seguranca, vamos encerrar o programa...");
 				printf("\n\n");
 				exit(0);
 			}
